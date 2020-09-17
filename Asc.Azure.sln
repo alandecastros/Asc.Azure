@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asc.Azure", "Asc.Azure\Asc.Azure.csproj", "{22CAF0D9-35E4-4E28-A9CF-5EC11EBA6FEC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B0FA64B8-FBEF-44E1-AD0F-D7BF8AA55B41}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		.github\workflows\nuget.yml = .github\workflows\nuget.yml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{22CAF0D9-35E4-4E28-A9CF-5EC11EBA6FEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22CAF0D9-35E4-4E28-A9CF-5EC11EBA6FEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22CAF0D9-35E4-4E28-A9CF-5EC11EBA6FEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22CAF0D9-35E4-4E28-A9CF-5EC11EBA6FEC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E4DF34EB-60BC-4BC6-9D4C-D9F4F0FBCA2E}
+	EndGlobalSection
+EndGlobal
