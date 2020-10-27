@@ -21,6 +21,7 @@ namespace Asc.Azure
             var storageAcc = CloudStorageAccount.Parse(connectionString);
             var tableClient = storageAcc.CreateCloudTableClient(new TableClientConfiguration());
             table = tableClient.GetTableReference(tableName);
+            table.CreateIfNotExists();
         }
 
         public async Task<T> Get(string partitionKey, string rowKey)

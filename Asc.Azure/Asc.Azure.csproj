@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
       <Description>Azure abstractions implementation</Description>
-      <Version>1.0.0</Version>
+      <Version>1.1.0</Version>
       <Authors>Alan Castro</Authors>
       <PackageTags>azure</PackageTags>
       <PackageProjectUrl>https://github.com/alandecastros/Asc.Azure</PackageProjectUrl>
