@@ -1,5 +1,4 @@
 ﻿using Asc.Azure.Abstractions;
-using ConsistentSharp;
 using Microsoft.Azure.Cosmos.Table;
 using System;
 using System.Collections.Generic;
@@ -11,48 +10,27 @@ namespace Asc.Azure
     public class TableRepository<T> : ITableRepository<T> where T : TableEntity, new()
     {
         private readonly CloudTable table;
-        private readonly ConsistentHash ch;
+        private readonly bool usePartitionKeyService;
 
-        public TableRepository(CloudTable table, int? totalPartitions = null)
+        public TableRepository(CloudTable table, bool usePartitionKeyService = false)
         {
             this.table = table;
-
-            if (totalPartitions.HasValue)
-            {
-                ch = new ConsistentHash();
-                for (var i = 0; i < totalPartitions.Value; i++)
-                {
-                    ch.Add($"p{i}");
-                }
-            }
+            this.usePartitionKeyService = usePartitionKeyService;
         }
 
-        public TableRepository(string connectionString, string tableName, int? totalPartitions = null)
+        public TableRepository(string connectionString, string tableName, bool usePartitionKeyService = false)
         {
+            this.usePartitionKeyService = usePartitionKeyService;
             var storageAcc = CloudStorageAccount.Parse(connectionString);
             var tableClient = storageAcc.CreateCloudTableClient(new TableClientConfiguration());
             table = tableClient.GetTableReference(tableName);
-            table.CreateIfNotExists();
-
-            if (totalPartitions.HasValue)
-            {
-                ch = new ConsistentHash();
-                for (var i = 0; i < totalPartitions.Value; i++)
-                {
-                    ch.Add($"p{i}");
-                }
-            }
-        }
-
-        public bool IsPartitionKeyHashed()
-        {
-            return ch != null;
+            table.CreateIfNotExists();            
         }
 
         public async Task<T> GetAsync(string rowKey, string partitionKey = null)
         {
             var pk = partitionKey ?? rowKey;
-            pk = IsPartitionKeyHashed() ? ch.Get(rowKey) : pk;
+            pk = usePartitionKeyService ? PartitionKeyService.Get(rowKey) : pk;
 
             TableOperation readOperation = TableOperation.Retrieve<T>(pk, rowKey);
             TableResult result = await table.ExecuteAsync(readOperation);
@@ -91,7 +69,7 @@ namespace Asc.Azure
         public async Task<T> SaveAsync(T entity)
         {
             entity.PartitionKey = entity.PartitionKey ?? entity.RowKey;
-            entity.PartitionKey = IsPartitionKeyHashed() ? ch.Get(entity.RowKey) : entity.PartitionKey;
+            entity.PartitionKey = usePartitionKeyService ? PartitionKeyService.Get(entity.RowKey) : entity.PartitionKey;
 
             TableOperation insertOperation = TableOperation.InsertOrMerge(entity);
             TableResult result = await table.ExecuteAsync(insertOperation);
